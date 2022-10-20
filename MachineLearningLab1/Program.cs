@@ -25,13 +25,7 @@ namespace MachineLearningLab1
         private static void ParseOptionsAndRun(string[] args)
         {
             Parser.Default.ParseArguments<Options>(args)
-                .WithParsed(Run)
-                .WithNotParsed(HandleParseError);
-        }
-
-        private static void HandleParseError(IEnumerable<Error> errs)
-        {
-            throw new Exception("FUCK!");
+                .WithParsed(Run);
         }
 
         private static void Run(Options options)
