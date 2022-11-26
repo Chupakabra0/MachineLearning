@@ -43,7 +43,7 @@ namespace MachineLearningLab2
             var ruleList = new List<FuzzyRule> {
                 Rule.If(temperature.Is(norm).And(pressure.Is(normal)).And(sea.Is(avarage))).Then(comfortLevel.Is(happy)),
                 Rule.If(temperature.Is(cold).And(pressure.Is(small)).And(sea.Is(high))).Then(comfortLevel.Is(ok)),
-                Rule.If(temperature.Is(high).And(pressure.Is(big)).And(sea.Is(low))).Then(comfortLevel.Is(ok)),
+                Rule.If(temperature.Is(hot).And(pressure.Is(big)).And(sea.Is(low))).Then(comfortLevel.Is(ok)),
                 Rule.If(temperature.Is(cold).And(pressure.IsNot(normal)).And(sea.Is(norm))).Then(comfortLevel.Is(sad)),
                 Rule.If(temperature.IsNot(cold).And(pressure.IsNot(normal)).And(sea.Is(norm))).Then(comfortLevel.Is(fuck)),
                 Rule.If(temperature.Is(cold).And(sea.Is(low))).Then(comfortLevel.Is(fuck)),
@@ -55,9 +55,9 @@ namespace MachineLearningLab2
             fuzzyEngine.Rules.Add(ruleList.ToArray());
 
             var result = fuzzyEngine.Defuzzify(new {
-                temperature = 0,
-                pressure    = 700,
-                sea         = 200
+                temperature = 100,
+                pressure    = 750,
+                sea         = 800
             });
 
             Console.WriteLine($"Result: {result}");
