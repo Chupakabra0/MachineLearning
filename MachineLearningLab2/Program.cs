@@ -1,5 +1,4 @@
 ﻿using CommandLine;
-using CommandLine.Text;
 using FLS;
 using FLS.Rules;
 
@@ -29,24 +28,24 @@ namespace MachineLearningLab2 {
             var fuzzyEngine = new FuzzyEngineFactory().Default();
 
             var centralProcessorLingusticVar = new LinguisticVariable("CPU");
-            var centralProcessorBad = centralProcessorLingusticVar.MembershipFunctions.AddTriangle("Bad CPU", 0, 7.5, 14);
-            var centralProcessorGood = centralProcessorLingusticVar.MembershipFunctions.AddTriangle("Good CPU", 10, 15, 20);
-            var centralProcessorPerfect = centralProcessorLingusticVar.MembershipFunctions.AddTriangle("Perfect CPU", 17.5, 40, 100);
+            var centralProcessorBad          = centralProcessorLingusticVar.MembershipFunctions.AddTriangle("Bad CPU", 0, 7.5, 14);
+            var centralProcessorGood         = centralProcessorLingusticVar.MembershipFunctions.AddTriangle("Good CPU", 10, 15, 20);
+            var centralProcessorPerfect      = centralProcessorLingusticVar.MembershipFunctions.AddTriangle("Perfect CPU", 17.5, 40, 100);
 
             var videoCardLingusticVar = new LinguisticVariable("GPU");
-            var videoCardBad = videoCardLingusticVar.MembershipFunctions.AddTriangle("Bad GPU", 0, 10, 20);
-            var videoCardGood = videoCardLingusticVar.MembershipFunctions.AddTriangle("Good GPU", 15, 35, 55);
-            var videoCardPerfect = videoCardLingusticVar.MembershipFunctions.AddTriangle("Perfect GPU", 40, 100, 100);
+            var videoCardBad          = videoCardLingusticVar.MembershipFunctions.AddTriangle("Bad GPU", 0, 10, 20);
+            var videoCardGood         = videoCardLingusticVar.MembershipFunctions.AddTriangle("Good GPU", 15, 35, 55);
+            var videoCardPerfect      = videoCardLingusticVar.MembershipFunctions.AddTriangle("Perfect GPU", 40, 100, 100);
 
             var memoryLingusticVar = new LinguisticVariable("RAM");
-            var memoryBad = memoryLingusticVar.MembershipFunctions.AddTriangle("Bad RAM", 0, 12.5, 30);
-            var memoryGood = memoryLingusticVar.MembershipFunctions.AddTriangle("Good RAM", 25, 40, 55);
-            var memoryPerfect = memoryLingusticVar.MembershipFunctions.AddTriangle("Perfect RAM", 45, 100, 100);
+            var memoryBad          = memoryLingusticVar.MembershipFunctions.AddTriangle("Bad RAM", 0, 12.5, 30);
+            var memoryGood         = memoryLingusticVar.MembershipFunctions.AddTriangle("Good RAM", 25, 40, 55);
+            var memoryPerfect      = memoryLingusticVar.MembershipFunctions.AddTriangle("Perfect RAM", 45, 100, 100);
 
             var computerSpeedLingusticVar = new LinguisticVariable("PC Speed");
-            var computerSpeedBad = computerSpeedLingusticVar.MembershipFunctions.AddTrapezoid("Bad PC Speed", 0, 0, 15, 30);
-            var computerSpeedGood = computerSpeedLingusticVar.MembershipFunctions.AddTriangle("Good PC Speed", 20, 50, 75);
-            var computerSpeedPerfect = computerSpeedLingusticVar.MembershipFunctions.AddTrapezoid("Perfect PC Speed", 65, 85, 100, 100);
+            var computerSpeedBad          = computerSpeedLingusticVar.MembershipFunctions.AddTrapezoid("Bad PC Speed", 0, 0, 15, 30);
+            var computerSpeedGood         = computerSpeedLingusticVar.MembershipFunctions.AddTriangle("Good PC Speed", 20, 50, 75);
+            var computerSpeedPerfect      = computerSpeedLingusticVar.MembershipFunctions.AddTrapezoid("Perfect PC Speed", 65, 85, 100, 100);
 
             var ruleList = new List<FuzzyRule> {
                 // slow CPU cases
