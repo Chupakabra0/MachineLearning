@@ -1,66 +1,172 @@
 ﻿using FLS;
 using FLS.Rules;
 
-namespace MachineLearningLab2
-{
-    internal class Program
-    { 
-        internal class Options
-        {
+namespace MachineLearningLab2 {
+    internal class Program { 
+        internal class Options {
 
         }
 
-        private static void ParseOptionsAndRun(string[] args)
-        {
-            Program.Run(null);
+        private static void ParseOptionsAndRun(string[] args) {
+            Program.TestRun();
         }
 
-        private static void Run(Options? options)
-        {
-            var temperature = new LinguisticVariable("Temperature");
-            var cold        = temperature.MembershipFunctions.AddTriangle("Cold", -30, -15, 0);
-            var norm        = temperature.MembershipFunctions.AddTriangle("Norm", -10, 10, 30);
-            var hot         = temperature.MembershipFunctions.AddTriangle("Hot", 20, 30, 40);
+        private static void PrintResult(string preString, double result) {
+            Console.WriteLine(preString);
 
-            var pressure = new LinguisticVariable("Pressure");
-            var small    = pressure.MembershipFunctions.AddTrapezoid("Small", 400, 400, 550, 750);
-            var normal   = pressure.MembershipFunctions.AddTriangle("Normal", 730, 760, 780);
-            var big      = pressure.MembershipFunctions.AddTrapezoid("Big", 770, 900, 1000, 1000);
+            if (result < 20.0) {
+                Console.WriteLine($"Stupid dirty PC... Rate: {result}");
+            }
+            else if (result < 30.0) {
+                Console.WriteLine($"Slow PC :( Rate: {result}");
+            }
+            else if (result < 65.0) {
+                Console.WriteLine($"Good PC :) Rate: {result}");
+            }
+            else {
+                Console.WriteLine($"Damn son where'd you find this?! Rate: {result}");
+            }
+        }
 
-            var sea      = new LinguisticVariable("Sea");
-            var low      = temperature.MembershipFunctions.AddTriangle("Low", -500, 0, 500);
-            var avarage  = temperature.MembershipFunctions.AddTriangle("Avarage", 400, 1000, 2000);
-            var high     = temperature.MembershipFunctions.AddTriangle("High", 1500, 3000, 9000);
+        private static void TestRun() {
+            var centralProcessorLingusticVar = new LinguisticVariable("CPU");
+            var centralProcessorBad          = centralProcessorLingusticVar.MembershipFunctions.AddTriangle("Bad CPU", 0, 7.5, 14);
+            var centralProcessorGood         = centralProcessorLingusticVar.MembershipFunctions.AddTriangle("Good CPU", 10, 15, 20);
+            var centralProcessorPerfect      = centralProcessorLingusticVar.MembershipFunctions.AddTriangle("Perfect CPU", 17.5, 40, 100);
 
-            var comfortLevel = new LinguisticVariable("Comfort Level");
-            var happy        = comfortLevel.MembershipFunctions.AddRectangle("Happy", 70, 100);
-            var ok           = comfortLevel.MembershipFunctions.AddRectangle("Ok", 45, 75);
-            var sad          = comfortLevel.MembershipFunctions.AddRectangle("Sad", 25, 50);
-            var fuck         = comfortLevel.MembershipFunctions.AddRectangle("Fuck", -1, 30);
+            var videoCardLingusticVar = new LinguisticVariable("GPU");
+            var videoCardBad          = videoCardLingusticVar.MembershipFunctions.AddTriangle("Bad GPU", 0, 10, 20);
+            var videoCardGood         = videoCardLingusticVar.MembershipFunctions.AddTriangle("Good GPU", 15, 35, 55);
+            var videoCardPerfect      = videoCardLingusticVar.MembershipFunctions.AddTriangle("Perfect GPU", 40, 100, 100);
+
+            var memoryLingusticVar = new LinguisticVariable("RAM");
+            var memoryBad          = memoryLingusticVar.MembershipFunctions.AddTriangle("Bad RAM", 0, 12.5, 30);
+            var memoryGood         = memoryLingusticVar.MembershipFunctions.AddTriangle("Good RAM", 25, 40, 55);
+            var memoryPerfect      = memoryLingusticVar.MembershipFunctions.AddTriangle("Perfect RAM", 45, 100, 100);
+
+            var computerSpeedLingusticVar = new LinguisticVariable("PC Speed");
+            var computerSpeedBad          = computerSpeedLingusticVar.MembershipFunctions.AddTrapezoid("Bad PC Speed", 0, 0, 15, 30);
+            var computerSpeedGood         = computerSpeedLingusticVar.MembershipFunctions.AddTriangle("Good PC Speed", 20, 50, 75);
+            var computerSpeedPerfect      = computerSpeedLingusticVar.MembershipFunctions.AddTrapezoid("Perfect PC Speed", 65, 85, 100, 100);
+
+            var ruleList = new List<FuzzyRule> {
+                // slow CPU cases
+
+                Rule.If (
+                    centralProcessorLingusticVar.Is(centralProcessorBad)
+                        .And(memoryLingusticVar.Is(memoryBad))
+                ).Then(computerSpeedLingusticVar.Is(computerSpeedBad)),
+                Rule.If (
+                    centralProcessorLingusticVar.Is(centralProcessorBad)
+                        .And(videoCardLingusticVar.Is(videoCardBad))
+                ).Then(computerSpeedLingusticVar.Is(computerSpeedBad)),
+                Rule.If (
+                    centralProcessorLingusticVar.Is(centralProcessorBad)
+                        .And(videoCardLingusticVar.Is(videoCardBad))
+                ).Then(computerSpeedLingusticVar.Is(computerSpeedBad)),
+                Rule.If (
+                    centralProcessorLingusticVar.Is(centralProcessorBad)
+                        .And(memoryLingusticVar.Is(memoryPerfect))
+                        .And(videoCardLingusticVar.IsNot(videoCardBad))
+                ).Then(computerSpeedLingusticVar.Is(computerSpeedGood)),
+                Rule.If (
+                    centralProcessorLingusticVar.Is(centralProcessorBad)
+                        .And(memoryLingusticVar.Is(memoryGood))
+                        .And(videoCardLingusticVar.Is(videoCardPerfect))
+                ).Then(computerSpeedLingusticVar.Is(computerSpeedGood)),
+                Rule.If (
+                    centralProcessorLingusticVar.Is(centralProcessorBad)
+                        .And(memoryLingusticVar.Is(memoryGood))
+                        .And(videoCardLingusticVar.Is(videoCardGood))
+                ).Then(computerSpeedLingusticVar.Is(computerSpeedBad)),
+
+                // good CPU cases
+
+                Rule.If (
+                    centralProcessorLingusticVar.Is(centralProcessorGood)
+                        .And(memoryLingusticVar.Is(memoryPerfect))
+                        .And(videoCardLingusticVar.Is(videoCardPerfect))
+                ).Then(computerSpeedLingusticVar.Is(computerSpeedPerfect)),
+                Rule.If (
+                    centralProcessorLingusticVar.Is(centralProcessorGood)
+                        .And(memoryLingusticVar.IsNot(memoryPerfect))
+                        .And(videoCardLingusticVar.Is(videoCardPerfect))
+                ).Then(computerSpeedLingusticVar.Is(computerSpeedGood)),
+                Rule.If (
+                    centralProcessorLingusticVar.Is(centralProcessorGood)
+                        .And(memoryLingusticVar.Is(memoryPerfect))
+                        .And(videoCardLingusticVar.IsNot(videoCardPerfect))
+                ).Then(computerSpeedLingusticVar.Is(computerSpeedGood)),
+                Rule.If (
+                    centralProcessorLingusticVar.Is(centralProcessorGood)
+                        .And(memoryLingusticVar.Is(memoryBad))
+                        .And(videoCardLingusticVar.IsNot(videoCardPerfect))
+                ).Then(computerSpeedLingusticVar.Is(computerSpeedBad)),
+                Rule.If (
+                    centralProcessorLingusticVar.Is(centralProcessorGood)
+                        .And(memoryLingusticVar.Is(memoryGood))
+                        .And(videoCardLingusticVar.Is(videoCardGood))
+                ).Then(computerSpeedLingusticVar.Is(computerSpeedGood)),
+                Rule.If (
+                    centralProcessorLingusticVar.Is(centralProcessorGood)
+                        .And(memoryLingusticVar.Is(memoryBad))
+                        .And(videoCardLingusticVar.Is(videoCardBad))
+                ).Then(computerSpeedLingusticVar.Is(computerSpeedBad)),
+
+                // perfect CPU cases
+
+                Rule.If (
+                    centralProcessorLingusticVar.Is(centralProcessorPerfect)
+                        .And(memoryLingusticVar.Is(memoryGood))
+                ).Then(computerSpeedLingusticVar.Is(computerSpeedGood)),
+                Rule.If (
+                    centralProcessorLingusticVar.Is(centralProcessorPerfect)
+                        .And(videoCardLingusticVar.Is(videoCardGood))
+                ).Then(computerSpeedLingusticVar.Is(computerSpeedGood)),
+                Rule.If (
+                    centralProcessorLingusticVar.Is(centralProcessorPerfect)
+                        .And(memoryLingusticVar.Is(memoryPerfect))
+                        .And(videoCardLingusticVar.IsNot(videoCardBad))
+                ).Then(computerSpeedLingusticVar.Is(computerSpeedPerfect)),
+                Rule.If (
+                    centralProcessorLingusticVar.Is(centralProcessorPerfect)
+                        .And(memoryLingusticVar.Is(memoryGood))
+                        .And(videoCardLingusticVar.Is(videoCardGood))
+                ).Then(computerSpeedLingusticVar.Is(computerSpeedGood)),
+                Rule.If (
+                    centralProcessorLingusticVar.Is(centralProcessorPerfect)
+                        .And(memoryLingusticVar.Is(memoryGood))
+                        .And(videoCardLingusticVar.Is(videoCardPerfect))
+                ).Then(computerSpeedLingusticVar.Is(computerSpeedPerfect))
+            };
 
             IFuzzyEngine fuzzyEngine = new FuzzyEngineFactory().Default();
 
-            var ruleList = new List<FuzzyRule> {
-                Rule.If(temperature.Is(norm).And(pressure.Is(normal)).And(sea.Is(avarage))).Then(comfortLevel.Is(happy)),
-                Rule.If(temperature.Is(cold).And(pressure.Is(small)).And(sea.Is(high))).Then(comfortLevel.Is(ok)),
-                Rule.If(temperature.Is(hot).And(pressure.Is(big)).And(sea.Is(low))).Then(comfortLevel.Is(ok)),
-                Rule.If(temperature.Is(cold).And(pressure.IsNot(normal)).And(sea.Is(norm))).Then(comfortLevel.Is(sad)),
-                Rule.If(temperature.IsNot(cold).And(pressure.IsNot(normal)).And(sea.Is(norm))).Then(comfortLevel.Is(fuck)),
-                Rule.If(temperature.Is(cold).And(sea.Is(low))).Then(comfortLevel.Is(fuck)),
-                Rule.If(temperature.Is(hot).And(sea.Is(high))).Then(comfortLevel.Is(fuck)),
-                Rule.If(temperature.Is(cold).And(pressure.IsNot(small)).And(sea.Is(high))).Then(comfortLevel.Is(sad)),
-                Rule.If(temperature.Is(hot).And(pressure.IsNot(big)).And(sea.Is(low))).Then(comfortLevel.Is(sad))
-            };
-            
             fuzzyEngine.Rules.Add(ruleList.ToArray());
 
-            var result = fuzzyEngine.Defuzzify(new {
-                temperature = 100,
-                pressure    = 750,
-                sea         = 800
+            var result1 = fuzzyEngine.Defuzzify(new {
+                CPU = 13.13,
+                GPU = 17.80,
+                RAM = 30.00
             });
 
-            Console.WriteLine($"Result: {result}");
+            PrintResult("Ryzen 5 1600 AF + RX 570 + 16 Gb DDR4 2933 MHz CL20", result1);
+
+            var result2 = fuzzyEngine.Defuzzify(new {
+                CPU = 19.69,
+                GPU = 42.36,
+                RAM = 75.00
+            });
+
+            PrintResult("Ryzen 5 5600G + RTX 2060 + 16 DDR4 3600 MHz CL16", result2);
+
+            var result3 = fuzzyEngine.Defuzzify(new {
+                CPU = 37.91,
+                GPU = 68.38,
+                RAM = 95.00
+            });
+
+            PrintResult("Intel i5-13600KF + RTX 3080 12GB + 32 DDR5 6000 MHz CL36", result3);
         }
 
         public static void Main(string[] args)
