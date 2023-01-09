@@ -1,12 +1,15 @@
-﻿<Window x:Class="MachineLearningLab3.MainWindow"
+﻿<ui:UiWindow x:Class="MachineLearningLab3.MainWindow"
         xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
         xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
         xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
         xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
         xmlns:viewmodels="clr-namespace:MachineLearningLab3.ViewModels"
+        xmlns:ui="http://schemas.lepo.co/wpfui/2022/xaml"
         mc:Ignorable="d"
-        Title="MainWindow" Height="540" Width="960"
-        >
+        Title="Machine Learning Lab 3"
+        Height="540" Width="960"
+        ResizeMode="CanMinimize"
+        WindowCornerPreference="Round">
 
     <Window.DataContext>
         <viewmodels:WindowViewModel></viewmodels:WindowViewModel>
@@ -16,35 +19,74 @@
         <BooleanToVisibilityConverter x:Key="BooleanToVisibilityConverter"></BooleanToVisibilityConverter>
     </Window.Resources>
 
-    <Grid HorizontalAlignment="Center"
-          VerticalAlignment="Center">
+    <StackPanel HorizontalAlignment="Center"
+                VerticalAlignment="Center">
         <StackPanel HorizontalAlignment="Center"
                     VerticalAlignment="Center"
-                    Orientation="Vertical">
+                    Orientation="Vertical"
+                    Margin="0,0,0,10">
             <TextBlock Text="Print something cool:"
-                       FontSize="16">
-                
+                       FontSize="16"
+                       FontFamily="{StaticResource SegoeFluentIcons}"
+                       Foreground="{ui:ThemeResource TextFillColorPrimaryBrush}">
+
             </TextBlock>
             <TextBox HorizontalContentAlignment="Center"
                      VerticalContentAlignment="Center"
+                     HorizontalAlignment="Center"
+                     VerticalAlignment="Center"
                      Text="{Binding Path=InputText, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}"
                      FontSize="16"
-                     Margin="10">
-                
+                     Margin="10"
+                     MinWidth="100">
+
             </TextBox>
             <Button HorizontalContentAlignment="Center"
                     VerticalContentAlignment="Center"
-                    Content="Generate"
+                    HorizontalAlignment="Center"
+                    VerticalAlignment="Center"
+                    Content="{Binding Path=ButtonText, Mode=OneWay, UpdateSourceTrigger=PropertyChanged}"
                     FontSize="16"
                     Command="{Binding Path=ClickCommand}">
 
             </Button>
-            <Image Source="{Binding Path=ImageSource}"
-                   Visibility="{Binding Path=IsImageExists, Converter={StaticResource ResourceKey=BooleanToVisibilityConverter}, UpdateSourceTrigger=PropertyChanged}"
-                   Margin="256"
-                   Width="256">
-                
-            </Image>
         </StackPanel>
-    </Grid>
-</Window>
+        <StackPanel HorizontalAlignment="Center"
+                    VerticalAlignment="Center"
+                    Orientation="Vertical"
+                    Visibility="{Binding Path=IsImageExists, Mode=OneWay, Converter={StaticResource ResourceKey=BooleanToVisibilityConverter}, UpdateSourceTrigger=PropertyChanged}"
+                    Margin="0,10,0,0">
+                <Image Source="{Binding Path=ImageSource, Mode=OneWay, UpdateSourceTrigger=PropertyChanged}"
+                       Height="256"
+                       Width="256">
+
+                </Image>
+
+                <StackPanel HorizontalAlignment="Center"
+                            VerticalAlignment="Center"
+                            Orientation="Horizontal">
+                    <Button HorizontalContentAlignment="Center"
+                            VerticalContentAlignment="Center"
+                            HorizontalAlignment="Center"
+                            VerticalAlignment="Center"
+                            Content="Previous"
+                            FontSize="16"
+                            Command="{Binding Path=PrevImageCommand}"
+                            Margin="5"
+                            MinWidth="100">
+                    </Button>
+                    <Button HorizontalContentAlignment="Center"
+                            VerticalContentAlignment="Center"
+                            HorizontalAlignment="Center"
+                            VerticalAlignment="Center"
+                            Content="Next"
+                            FontFamily="16"
+                            Command="{Binding Path=NextImageCommand}"
+                            Margin="5"
+                            MinWidth="100">
+                    </Button>
+                </StackPanel>
+            </StackPanel>
+
+        </StackPanel>
+</ui:UiWindow>
