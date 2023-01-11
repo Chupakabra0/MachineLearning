@@ -1,3 +1,5 @@
+![banner](https://aqi.co.id/wp-content/uploads/2021/03/apa-itu-machine-learning.jpg)
+
 ## Лабораторная работа №1
 
 ### Постановка задачи
